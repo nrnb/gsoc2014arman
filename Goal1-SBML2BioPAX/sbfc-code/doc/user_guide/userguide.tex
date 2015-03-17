@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage[english]{babel}
+ \usepackage{fullpage}
+
+\usepackage{listings}
+\lstset{language=sh,basicstyle=\footnotesize,showspaces=false,showstringspaces=false,showtabs=false,frame=single,breaklines=true,breakatwhitespace=false,title=\lstname}
+\begin{document}
+
+
+
+\title{Systems Biology Format Converter package \\ a user's guide}
+\author{Jean-Baptiste Pettit, European Bioinformatics Institute}
+\maketitle
+\newpage
+\pagenumbering{Roman}
+\tableofcontents
+%\newpage
+%\listoffigures
+%\newpage
+%\listoftables
+\newpage
+\pagenumbering{arabic}
+\part{Introduction to SBFC}
+A quick overview of the Systems Biology Format Converter package contents and functionalities
+\section{Abstract}
+\section{Motivations}
+Interoperability between formats is a recurring issue in Systems Biology. Although there are various tools available to
+convert models from one format to another, most of them have been independently developed and cannot easily be
+combined, specially to provide support for more formats. Here we present the System Biology Format Converter (SBFC),
+which aims to provide a generic framework that potentially allows any conversion between two formats. The framework is
+written in Java and can be used as a standalone executable. This is a collaborative project and we hope that developers
+will provide support for more formats by creating new modules.
+\section{Package contents}
+The framework initially includes four converters, which covers the following formats: SBML, BioPAX, XPP and Octave.
+However, we expect that support for more formats will soon be added. A web application and a web service are also
+available from the European Bioinformatics Institute (EBI) website. It allows users to submit conversion jobs from a
+browser or their own application.\\\\
+
+\part{User's Guide}
+
+\section{Installing SBFC}
+In this section, you will find all the information needed to get started with using SBFC. 
+	\subsection{Where can I download the package ?}
+The package is mainly available from the SourceForge project page : {\bf http://sbfc.sourceforge.net/} \\
+Different versions of the package are available including different sets of converters.\\
+\begin{itemize}
+\item SBFC.jar : executable standalone package containing all the converters in their latest version 
+\item {\it other versions with subset of converters to come}
+\end{itemize}
+	\subsection{Which version of the package should I download ?}
+By default the project page invites you to download the latest stable version but you can find all the older versions as well from {\it this page}.
+	\subsection{Where should I put the files ?}
+The place you should put your files depends on the use you want to make from SBFC : Do you want to use it on its own or
+to launch conversion jobs from another program ?
+		\subsubsection{Using SBFC alone}
+To do that you should have downloaded SBFC.tar.gz or a subsection of converters from SBFC.tar.gz.\\
+The location you put the extracted folder doesn't really matter in this case, but we recommend you create a folder to put your model inside the SBFC folder.
+		\subsubsection{Using SBFC within a program}
+To do that you should have downloaded SBFC.jar or a subsection of converters from SBFC.jar.\\
+To use SBFC.jar, you will need to put the file in the library folder of your program and include the .jar in the library path of your program when compiling. If you have downloaded the standalone version of SBFC that is all you need to do, if not, you should also install the libraries that you need for SBFC to work within your program.
+
+\section{Your first conversion with SBFC}
+	\subsection{Launching a conversion job from the console}
+When unpacking the file SBFC.tar.gz, you will find inside different shellscript file (.sh). Those are the files you will need to run in order to launch conversion jobs. \\
+For your first conversion a set of {\bf model examples} is available in the folder {\it examples}.\\
+\begin{itemize}
+\item example\_SBML.xml : is a very simple model in SBML
+\item example\_BioPAX.owl : is a very simple model in BioPAX
+\end{itemize}
+Lets try to convert the SBML model into a Octave model :\\
+to do that all you need to do is launch the command :  
+\begin{lstlisting}
+./sbfConverter.sh SBMLModel SBML2Octave examples/example/SBML.xml
+\end{lstlisting}
+The general syntax to use being :
+\begin{lstlisting}
+./sbfConverter.sh [InputModelClass] [ConverterClass] [file | folder]
+\end{lstlisting}
+A list of the different InputModelClass and Converter can be found in the next section
+	\subsection{Launching a conversion job from a Java program}
+To launch conversion jobs from a Java program, you have too solutions:
+\begin{itemize}
+\item launch the Converter class located in /org/sbfc/converter/ that contains a main() method. In that case the syntax will be :
+\begin{lstlisting}
+Converter.java [InputModelClass] [ConverterClass] [ModelFile]}
+\end{lstlisting}For example: 
+\begin{lstlisting}
+org.sbfc.converter.Converter.java SBMLModel SBML2Octave examples/example/SBML.xml
+\end{lstlisting}
+\item launch a specific method in the Converter class: 
+\begin{lstlisting}
+From a String
+ConvertFromString([InputModelClass] [ConverterClass] [ModelString])
+or from a file
+ConvertFromFile([InputModelClass] [ConverterClass] [FilePath])
+\end{lstlisting}
+\end{itemize}
+
+\section{Detailed examples and options}
+	\subsection{available models formats for input}
+\begin{itemize}
+\item SBMLModel (operated by JSBML)
+Other models formats will be available for input in the future, you can help develop them. If you want to contribute take a look at the Developer's Guide.
+\end{itemize}
+	\subsection{available models formats for output}
+\begin{itemize}
+\item SBMLModel (operated by JSBML)
+\item BioPaxModel (operated by PAXTools)
+\item OctaveModel
+\item XPPModel
+\end{itemize}
+	\subsection{Available converters}
+\begin{itemize}
+\item SBML2BioPAX\_l2 : converts SBML (any level) to BioPAX level 2
+\item SBML2BioPAX\_l3 : converts SBML (any level) to BioPAX level 3
+\item SBML2Octave : converts SBML (any level) to Octave (Differential equations system)
+\item SBML2XPP : converts SBML (any level) to XPP
+\end{itemize}
+	\subsection{Conversion options}
+	\subsection{understanding errors}
+	\subsection{Advanced option}
+		\subsubsection{chaining conversion jobs ?}
+
+\part{More on SBFC}
+\section{where to get some help or where to report an issue?}
+If you have any trouble concerning the use of SBFC, please let us know on the Sourceforge project tracker 
+\begin{lstlisting}
+http://sourceforge.net/tracker/?group_id=359611
+\end{lstlisting}
+\section{You need another converter ?}
+You can develop it yourself and submit it to the project, to find out more details about the process, checkout the Developer's Guide. {\it not written yet...}\\
+You can also ask for a new converter on the Sourceforge project tracker in "Feature Request".
+\begin{lstlisting}
+http://sourceforge.net/tracker/?group_id=359611
+\end{lstlisting}
+\section{You need to run heavy conversion jobs on distant machines ?}
+Conversion jobs are very demanding in term of CPU and memory, if you have large models or a large number of models to convert, we have implemented ways for you to run conversion jobs on the EBI (European Bioinformatics Institute) clusters. You can either :
+\begin{itemize}
+\item Use the Web application. This is a user interface that allows to run multiple conversions from the web page : {\it Definitive address??}
+\item Use the Web service. The ConverterLink is a Java package that allows you to run conversion job from your programs and get the converted model directly as the return value of a method. For more information on the web service, see the user's guide at : {\it not written yet...}
+\end{itemize}
+
+\end{document}
